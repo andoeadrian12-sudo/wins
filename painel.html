@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel | WINS HOST</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#111;border-right:1px solid #292929;padding:25px 18px}
+.logo{font-size:25px;font-weight:bold;margin-bottom:40px}
+.logo span{color:#e32636}
+.nav a{display:block;padding:14px;margin:7px 0;color:#aaa;text-decoration:none;border-radius:7px}
+.nav a.active,.nav a:hover{background:#261214;color:#fff}
+.main{flex:1;padding:35px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+h1{margin:0 0 8px}
+.muted{color:#999}
+button{background:#e32636;color:#fff;border:0;padding:12px 17px;border-radius:7px;cursor:pointer;font-weight:bold}
+button:hover{background:#bd1e2c}
+.card{background:#151515;border:1px solid #292929;border-radius:12px;padding:22px;margin-top:25px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.stat{background:#151515;border:1px solid #292929;border-radius:12px;padding:22px}
+.stat strong{display:block;font-size:26px;margin-top:12px}
+#mensagem{color:#ff7777}
+@media(max-width:700px){
+.layout{display:block}
+.sidebar{width:100%;padding:15px}
+.logo{margin-bottom:15px}
+.nav{display:flex;flex-wrap:wrap}
+.nav a{padding:10px}
+.main{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo">WINS <span>HOST</span></div>
+  <nav class="nav">
+    <a class="active" href="painel.html">Dashboard</a>
+    <a href="#">Servidores</a>
+    <a href="#">Console</a>
+    <a href="#">Arquivos</a>
+    <a href="#">Configurações</a>
+    <a href="#">Suporte</a>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="top">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="muted">Bem-vindo à sua área de cliente.</p>
+    </div>
+    <button id="sair">Sair da conta</button>
+  </div>
+
+  <div class="card">
+    <p class="muted">CLIENTE</p>
+    <h2 id="nome">Carregando...</h2>
+    <p id="email" class="muted"></p>
+    <p id="mensagem"></p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="muted">Meus servidores</span>
+      <strong>0</strong>
+    </div>
+    <div class="stat">
+      <span class="muted">Plano atual</span>
+      <strong>Gratuito</strong>
+    </div>
+    <div class="stat">
+      <span class="muted">Status da conta</span>
+      <strong style="color:#e32636">Ativa</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Meus servidores</h2>
+    <p class="muted">Você ainda não possui servidores vinculados à sua conta.</p>
+    <p class="muted">A contratação e o gerenciamento de servidores serão implementados nas próximas etapas.</p>
+  </div>
+</main>
+</div>
+
+<script type="module">
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL = 'https://ykcibycbqhvdkajidqnm.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_7yZlCDzDq2pnaRRSJH-CLw_KO7ZaEuP';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const nomeElemento = document.getElementById('nome');
+const emailElemento = document.getElementById('email');
+const mensagem = document.getElementById('mensagem');
+
+async function iniciarPainel() {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data.user) {
+    window.location.replace('login.html');
+    return;
+  }
+
+  const usuario = data.user;
+
+  const { data: perfil, error: erroPerfil } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('id', usuario.id)
+    .maybeSingle();
+
+  if (erroPerfil) {
+    mensagem.textContent = 'Não foi possível carregar seu perfil.';
+  }
+
+  nomeElemento.textContent =
+    perfil?.username || usuario.user_metadata?.username || 'Cliente';
+
+  emailElemento.textContent = usuario.email || '';
+}
+
+document.getElementById('sair').addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    mensagem.textContent = 'Não foi possível sair da conta.';
+    return;
+  }
+
+  window.location.replace('login.html');
+});
+
+iniciarPainel();
+</script>
+
+</body>
+</html>
