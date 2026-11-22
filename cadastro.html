@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar conta | WINS HOST</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #090909;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .card {
+      width: 100%;
+      max-width: 420px;
+      padding: 35px;
+      background: #151515;
+      border: 1px solid #333;
+      border-radius: 14px;
+    }
+    h1 { text-align: center; margin-bottom: 8px; }
+    h1 span { color: #e32636; }
+    p { text-align: center; color: #aaa; }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-top: 14px;
+      background: #090909;
+      border: 1px solid #333;
+      border-radius: 7px;
+      color: white;
+      outline: none;
+    }
+    input:focus { border-color: #e32636; }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 7px;
+      background: #e32636;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    #mensagem { font-size: 14px; margin-top: 18px; }
+    a { color: #ff4655; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>WINS <span>HOST</span></h1>
+    <p>Crie sua conta para acessar seu painel.</p>
+
+    <form id="formCadastro">
+      <input id="nome" type="text" placeholder="Seu nome" required>
+      <input id="email" type="email" placeholder="Seu e-mail" required>
+      <input id="senha" type="password" placeholder="Sua senha (mínimo 8 caracteres)" minlength="8" required>
+      <button id="botao" type="submit">CRIAR CONTA</button>
+    </form>
+
+    <p id="mensagem" aria-live="polite"></p>
+    <p>Já possui uma conta? <a href="login.html">Entrar</a></p>
+  </main>
+
+  <script type="module">
+    import { createClient } from
+      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const SUPABASE_URL = 'https://ykcibycbqhvdkajidqnm.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_7yZlCDzDq2pnaRRSJH-CLw_KO7ZaEuP';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById('formCadastro');
+    const mensagem = document.getElementById('mensagem');
+    const botao = document.getElementById('botao');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      mensagem.textContent = '';
+      botao.disabled = true;
+      botao.textContent = 'CRIANDO...';
+
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value;
+
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password: senha,
+          options: {
+            data: { username: nome }
+          }
+        });
+
+        if (error) throw error;
+
+        if (data.session) {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({
+              id: data.user.id,
+              username: nome
+            });
+
+          if (profileError) throw profileError;
+          mensagem.textContent = 'Conta criada! Redirecionando...';
+          window.location.href = 'painel.html';
+        } else {
+          mensagem.textContent =
+            'Cadastro realizado! Confira seu e-mail para confirmar a conta.';
+        }
+      } catch (error) {
+        mensagem.textContent = 'Erro: ' + error.message;
+      } finally {
+        botao.disabled = false;
+        botao.textContent = 'CRIAR CONTA';
+      }
+    });
+  </script>
+</body>
+</html>
