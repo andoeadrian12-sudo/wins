@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0d">
+<title>WINS HOST | Minecraft Hosting</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#0b0b0d;color:#fff;font-family:Arial,Helvetica,sans-serif}
+:root{--red:#e32636;--dark:#111114;--gray:#999}
+header{height:76px;padding:0 8%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252529;background:#0b0b0d;position:sticky;top:0;z-index:10}
+.logo{font-size:27px;font-weight:900;letter-spacing:2px}
+.logo span{color:var(--red)}
+nav{display:flex;gap:28px;align-items:center}
+nav a{color:#ccc;text-decoration:none;font-size:14px}
+nav a:hover{color:var(--red)}
+.btn{display:inline-block;background:var(--red);color:white;padding:13px 22px;border-radius:6px;text-decoration:none;font-weight:bold;border:0;cursor:pointer;transition:.2s}
+.btn:hover{background:#b91827;transform:translateY(-2px)}
+.hero{min-height:590px;padding:110px 8%;display:flex;align-items:center;background:radial-gradient(ellipse at 80% 50%,#481319 0%,#171014 30%,#0b0b0d 70%)}
+.hero-content{max-width:680px}
+.tag{color:#ff6874;font-size:12px;font-weight:bold;letter-spacing:3px;margin-bottom:25px}
+h1{font-size:clamp(42px,7vw,76px);line-height:1.05;font-weight:900;margin-bottom:25px}
+h1 span{color:var(--red)}
+.hero p{color:#aaa;font-size:17px;line-height:1.8;max-width:540px;margin-bottom:32px}
+.buttons{display:flex;gap:14px;flex-wrap:wrap}
+.btn-outline{background:transparent;border:1px solid #555;color:white;padding:13px 22px;border-radius:6px;text-decoration:none;font-weight:bold}
+section{padding:85px 8%}
+.section-title{text-align:center;margin-bottom:48px}
+.section-title h2{font-size:34px;margin-bottom:13px}
+.section-title p{color:var(--gray);line-height:1.6}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#131316;border:1px solid #29292e;border-radius:10px;padding:28px;transition:.2s}
+.card:hover{border-color:var(--red);transform:translateY(-4px)}
+.card .symbol{font-size:30px;margin-bottom:20px}
+.card h3{margin-bottom:12px;font-size:19px}
+.card p{color:#999;line-height:1.7;font-size:14px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.plan{background:#131316;border:1px solid #29292e;border-radius:10px;padding:30px}
+.plan.featured{border:1px solid var(--red);position:relative}
+.plan h3{font-size:22px;margin-bottom:15px}
+.plan .price{font-size:32px;font-weight:bold;margin:20px 0}
+.plan .price small{font-size:13px;color:#999;font-weight:normal}
+.plan ul{list-style:none;margin:25px 0}
+.plan li{padding:10px 0;border-bottom:1px solid #29292e;color:#bbb;font-size:14px}
+.plan .btn{display:block;text-align:center}
+.note{font-size:12px;color:#999;line-height:1.6;margin-top:18px}
+.about{background:#111114}
+.about-content{max-width:760px;margin:auto;text-align:center}
+.about-content p{color:#aaa;line-height:1.9;margin-top:18px}
+.faq{max-width:800px;margin:auto}
+details{background:#141417;padding:20px;border:1px solid #29292e;border-radius:7px;margin-bottom:12px}
+summary{cursor:pointer;font-weight:bold}
+details p{color:#aaa;line-height:1.7;margin-top:15px}
+footer{padding:35px 8%;border-top:1px solid #29292e;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:#888;font-size:13px}
+footer strong{color:white}
+@media(max-width:800px){
+header{padding:0 5%}
+nav{gap:12px}
+nav a{font-size:12px}
+.features,.plans{grid-template-columns:1fr}
+.hero{padding:90px 6%;min-height:520px}
+section{padding:65px 6%}
+}
+@media(max-width:520px){
+header{height:auto;min-height:70px;flex-wrap:wrap;padding:15px 5%;gap:15px}
+nav{width:100%;justify-content:space-between;flex-wrap:wrap}
+nav .btn{padding:9px 12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">WINS<span>HOST</span></div>
+  <nav>
+    <a href="#inicio">Início</a>
+    <a href="#recursos">Recursos</a>
+    <a href="#planos">Planos</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#contato" class="btn">Começar</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="hero-content">
+    <div class="tag">MINECRAFT SERVER HOSTING</div>
+    <h1>SUA JORNADA.<br><span>SEU SERVIDOR.</span></h1>
+    <p>Conheça a WINS HOST. Uma nova proposta de hospedagem Minecraft, com tecnologia, praticidade e controle em um só lugar.</p>
+    <div class="buttons">
+      <a href="#planos" class="btn">Conhecer planos</a>
+      <a href="#recursos" class="btn-outline">Conhecer a WINS</a>
+    </div>
+  </div>
+</section>
+
+<section id="recursos">
+  <div class="section-title">
+    <h2>Por que escolher a WINS?</h2>
+    <p>Uma plataforma pensada para facilitar o gerenciamento do seu servidor.</p>
+  </div>
+  <div class="features">
+    <div class="card">
+      <div class="symbol">⚡</div>
+      <h3>Desempenho</h3>
+      <p>Estrutura planejada para oferecer uma experiência estável aos jogadores.</p>
+    </div>
+    <div class="card">
+      <div class="symbol">🖥️</div>
+      <h3>Painel próprio</h3>
+      <p>Uma interface personalizada para administrar seus servidores.</p>
+    </div>
+    <div class="card">
+      <div class="symbol">🛡️</div>
+      <h3>Segurança</h3>
+      <p>Organização e ferramentas para administrar sua hospedagem.</p>
+    </div>
+  </div>
+</section>
+
+<section id="planos">
+  <div class="section-title">
+    <h2>Nossos planos</h2>
+    <p>Conheça as opções que planejamos disponibilizar.</p>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <h3>STARTER</h3>
+      <p>Para começar seu projeto.</p>
+      <div class="price">Em breve</div>
+      <ul>
+        <li>Servidor Minecraft</li>
+        <li>Painel de gerenciamento</li>
+        <li>Suporte básico</li>
+      </ul>
+      <a href="#contato" class="btn">Saiba mais</a>
+    </div>
+    <div class="plan featured">
+      <h3>ADVANCED</h3>
+      <p>Para projetos em crescimento.</p>
+      <div class="price">Em breve</div>
+      <ul>
+        <li>Recursos ampliados</li>
+        <li>Painel de gerenciamento</li>
+        <li>Suporte prioritário</li>
+      </ul>
+      <a href="#contato" class="btn">Saiba mais</a>
+    </div>
+    <div class="plan">
+      <h3>PREMIUM</h3>
+      <p>Para projetos maiores.</p>
+      <div class="price">Em breve</div>
+      <ul>
+        <li>Recursos avançados</li>
+        <li>Gerenciamento completo</li>
+        <li>Suporte especializado</li>
+      </ul>
+      <a href="#contato" class="btn">Saiba mais</a>
+    </div>
+  </div>
+  <p class="note">Os planos são demonstrativos. Nenhuma hospedagem ou contratação está disponível neste momento.</p>
+</section>
+
+<section class="about" id="sobre">
+  <div class="about-content">
+    <div class="tag">SOBRE A WINS</div>
+    <h2>Mais que uma hospedagem.</h2>
+    <p>A WINS HOST nasce com o objetivo de oferecer uma plataforma própria para gerenciamento de servidores Minecraft. Estamos construindo nossa estrutura para entregar uma experiência simples, moderna e organizada.</p>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="section-title">
+    <h2>Entre em contato</h2>
+    <p>Quer acompanhar o desenvolvimento da WINS HOST?</p>
+    <br>
+    <a href="mailto:contato@winshost.com" class="btn">Enviar e-mail</a>
+    <p class="note">O endereço de e-mail é ilustrativo e precisa ser configurado antes do uso.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <strong>WINS HOST</strong>
+  <span>© 2026 WINS HOST. Todos os direitos reservados.</span>
+  <span>Minecraft Hosting</span>
+</footer>
+
+</body>
+</html>
