@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servidores | WINS HOST</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#090909;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+header{
+  background:#111;
+  border-bottom:1px solid #292929;
+  padding:20px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{font-size:25px;font-weight:bold}
+.logo span{color:#e32636}
+
+main{
+  max-width:850px;
+  margin:40px auto;
+  padding:20px;
+}
+
+.card{
+  background:#151515;
+  border:1px solid #292929;
+  border-radius:12px;
+  padding:25px;
+  margin-bottom:20px;
+}
+
+h1,h2{margin-top:0}
+
+label{
+  display:block;
+  margin:18px 0 8px;
+  color:#bbb;
+}
+
+input,select{
+  width:100%;
+  padding:13px;
+  border:1px solid #333;
+  background:#090909;
+  color:#fff;
+  border-radius:7px;
+}
+
+button{
+  background:#e32636;
+  color:#fff;
+  border:0;
+  padding:13px 18px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+button:hover{background:#bd1e2c}
+
+.muted{color:#999}
+
+#mensagem{margin-top:15px;color:#ff7777}
+
+.server{
+  background:#101010;
+  border:1px solid #292929;
+  padding:15px;
+  border-radius:8px;
+  margin-top:12px;
+}
+
+a{color:#e32636;text-decoration:none}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">WINS <span>HOST</span></div>
+  <a href="painel.html">Voltar ao painel</a>
+</header>
+
+<main>
+
+  <div class="card">
+    <h1>Meus servidores</h1>
+    <p class="muted">
+      Cadastre e acompanhe seus servidores.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Criar servidor</h2>
+
+    <form id="formServidor">
+
+      <label for="nomeServidor">Nome do servidor</label>
+      <input
+        id="nomeServidor"
+        type="text"
+        maxlength="30"
+        placeholder="Ex: Meu servidor SMP"
+        required
+      >
+
+      <label for="jogo">Jogo</label>
+      <select id="jogo">
+        <option value="Minecraft">Minecraft Java</option>
+      </select>
+
+      <label for="versao">Versão</label>
+      <select id="versao">
+        <option value="1.21.11">1.21.11</option>
+        <option value="1.21.10">1.21.10</option>
+        <option value="1.21.8">1.21.8</option>
+        <option value="1.21.4">1.21.4</option>
+        <option value="1.20.6">1.20.6</option>
+        <option value="1.20.4">1.20.4</option>
+      </select>
+
+      <label for="software">Software</label>
+      <select id="software">
+        <option value="Vanilla">Vanilla</option>
+        <option value="Paper">Paper</option>
+        <option value="Purpur">Purpur</option>
+      </select>
+
+      <button type="submit" id="criar">
+        Criar servidor
+      </button>
+
+      <p id="mensagem"></p>
+
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Servidores cadastrados</h2>
+    <div id="lista">
+      <p class="muted">Carregando...</p>
+    </div>
+  </div>
+
+</main>
+
+<script type="module">
+
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL =
+'https://ykcibycbqhvdkajidqnm.supabase.co';
+
+const SUPABASE_ANON_KEY =
+'sb_publishable_7yZlCDzDq2pnaRRSJH-CLw_KO7ZaEuP';
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+const form = document.getElementById('formServidor');
+const mensagem = document.getElementById('mensagem');
+const lista = document.getElementById('lista');
+const botao = document.getElementById('criar');
+
+let usuarioAtual = null;
+
+async function verificarUsuario(){
+
+  const {data,error} = await supabase.auth.getUser();
+
+  if(error || !data.user){
+    window.location.replace('login.html');
+    return;
+  }
+
+  usuarioAtual = data.user;
+
+  carregarServidores();
+
+}
+
+async function carregarServidores(){
+
+  const {data,error} = await supabase
+    .from('servers')
+    .select('id,name,game,version,status')
+    .eq('user_id',usuarioAtual.id)
+    .order('created_at',{ascending:false});
+
+  if(error){
+    lista.textContent = 'Erro ao carregar servidores.';
+    console.error(error);
+    return;
+  }
+
+  lista.replaceChildren();
+
+  if(data.length === 0){
+    lista.textContent =
+    'Você ainda não possui servidores cadastrados.';
+    return;
+  }
+
+  data.forEach(servidor => {
+
+    const card = document.createElement('div');
+    card.className = 'server';
+
+    const nome = document.createElement('h3');
+    nome.textContent = servidor.name;
+
+    const detalhes = document.createElement('p');
+    detalhes.className = 'muted';
+    detalhes.textContent =
+    servidor.game + ' | ' +
+    servidor.version;
+
+    const software = document.createElement('p');
+    software.className = 'muted';
+    software.textContent =
+    'Status: ' + servidor.status;
+
+    card.append(nome,detalhes,software);
+    lista.appendChild(card);
+
+  });
+
+}
+
+form.addEventListener('submit',async(event)=>{
+
+  event.preventDefault();
+
+  if(!usuarioAtual)return;
+
+  mensagem.style.color = '#ff7777';
+  mensagem.textContent = '';
+
+  botao.disabled = true;
+  botao.textContent = 'Cadastrando...';
+
+  const nome =
+  document.getElementById('nomeServidor').value.trim();
+
+  const jogo =
+  document.getElementById('jogo').value;
+
+  const versao =
+  document.getElementById('versao').value;
+
+  const software =
+  document.getElementById('software').value;
+
+  if(nome.length < 3){
+    mensagem.textContent =
+    'O nome precisa ter pelo menos 3 caracteres.';
+    botao.disabled = false;
+    botao.textContent = 'Criar servidor';
+    return;
+  }
+
+  const {error} = await supabase
+    .from('servers')
+    .insert({
+      user_id:usuarioAtual.id,
+      name:nome,
+      game:jogo,
+      version:versao,
+      status:'stopped'
+    });
+
+  if(error){
+
+    console.error(error);
+
+    mensagem.textContent =
+    'Erro ao cadastrar. Verifique a configuração do banco.';
+
+  }else{
+
+    mensagem.style.color = '#55cc77';
+    mensagem.textContent =
+    'Servidor cadastrado com sucesso!';
+
+    form.reset();
+
+    await carregarServidores();
+
+  }
+
+  botao.disabled = false;
+  botao.textContent = 'Criar servidor';
+
+});
+
+verificarUsuario();
+
+</script>
+
+</body>
+</html>
